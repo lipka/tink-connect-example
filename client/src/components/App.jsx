@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Callback from './Callback';
 import { Col, Container, Row } from 'reactstrap';
 import Aggregation from './Aggregation';
+import Payment from './Payment';
 
 const App = () => (
   <Container>
@@ -20,6 +21,7 @@ const App = () => (
 
         <Switch>
           <Route exact path="/" component={Aggregation} />
+          <Route exact path="/payment" component={Payment} />
           <Route exact path="/callback" component={Callback} />
         </Switch>
 
