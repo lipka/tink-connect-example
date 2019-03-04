@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Callback from './Callback';
 import { Col, Container, Row } from 'reactstrap';
-import Main from './Main';
+import Aggregation from './Aggregation';
 
 const App = () => (
   <Container>
@@ -19,7 +19,7 @@ const App = () => (
       <Col lg={{size: 8, offset: 2}} style={{paddingTop: '70px'}}>
 
         <Switch>
-          <Route exact path="/" component={Main} />
+          <Route exact path="/" component={Aggregation} />
           <Route exact path="/callback" component={Callback} />
         </Switch>
 

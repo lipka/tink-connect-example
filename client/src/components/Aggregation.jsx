@@ -3,7 +3,7 @@ import Header from './Header';
 import AuthorizationLink from './AuthorizationLink';
 import { BasicDropdown } from './BasicDropdown';
 
-export default class Main extends React.Component {
+export default class Aggregation extends React.Component {
   constructor(props) {
     super(props);
 
