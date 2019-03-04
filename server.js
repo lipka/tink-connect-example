@@ -6,6 +6,8 @@ const fetch = require('node-fetch');
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET;
+const DESTINATION_URI = process.env.REACT_APP_DESTINATION_URI;
+const DESTINATION_MESSAGE = process.env.REACT_APP_DESTINATION_MESSAGE;
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(bodyParser.json());
@@ -15,7 +17,7 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-const base = 'https://api.tink.se/api/v1';
+const base = 'https://main.staging.oxford.tink.se/api/v1';
 
 // This is the server API, where the client can post a received OAuth code.
 app.post('/callback', function (req, res) {
@@ -27,6 +29,36 @@ app.post('/callback', function (req, res) {
 
   }).catch(err => console.log(err));
 });
+
+app.post('/pay', function(req, res) {
+  createPaymentRequest().then(function (response) {
+    res.send(JSON.stringify({response: response}))
+  }).catch(err => console.log(err));
+});
+
+async function createPaymentRequest(amount, currency, destination) {
+  const body = {
+    destinationUri: DESTINATION_URI,
+    amount: '1',
+    currency: 'SEK',
+    destinationMessage: DESTINATION_MESSAGE,
+    oauthClientId: CLIENT_ID,
+    oauthClientSecret: CLIENT_SECRET,
+  };
+
+  const response = await fetch(base + '/payments/requests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (response.status !== 200) {
+    throw Error(response.status);
+  }
+  return response.json();
+}
 
 async function getData(accessToken) {
   const categoryResponse = await getCategoryData(accessToken);
